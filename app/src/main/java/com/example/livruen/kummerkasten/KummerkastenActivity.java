@@ -148,10 +148,6 @@ public class KummerkastenActivity extends AppCompatActivity
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setDoOutput(true);
 
-                OutputStreamWriter outputStreamWriter = new OutputStreamWriter(urlConnection.getOutputStream());
-                outputStreamWriter.write(data);
-                outputStreamWriter.flush();
-
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
                  content =  readStream(in);
