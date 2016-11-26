@@ -44,7 +44,7 @@ public class KummerkastenActivity extends AppCompatActivity
         setContentView(R.layout.activity_kummerkasten);
 
         // Set WP Webside
-        String restURL = "http://study.mipsol.com";
+        String restURL = "http://study.mipsol.com/category/news/";
         //setView(restURL);
 
 
@@ -191,7 +191,7 @@ public class KummerkastenActivity extends AppCompatActivity
             try {
                 jsonResponse = new JSONObject(content);
 
-                JSONArray jsonArray = jsonResponse.optJSONArray("study");
+                JSONArray jsonArray = jsonResponse.optJSONArray("id");
 
                 for(int i = 0; i < jsonArray.length(); i++) {
                     JSONObject child = jsonArray.getJSONObject(i);
@@ -204,8 +204,8 @@ public class KummerkastenActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            textView.setText(output);
-            //  textView.setText(content);
+            textView.setText(content);
+             // textView.setText(output);
 
 
         }
