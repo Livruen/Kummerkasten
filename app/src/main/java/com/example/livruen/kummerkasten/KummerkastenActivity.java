@@ -44,7 +44,7 @@ public class KummerkastenActivity extends AppCompatActivity
         setContentView(R.layout.activity_kummerkasten);
 
         // Set WP Webside
-        String restURL = "http://study.mipsol.com/category/news/";
+        String restURL = "http://study.mipsol.com/wp-json/wp/v2/posts/?filter[category_name]=news";
         //setView(restURL);
 
 
@@ -191,7 +191,7 @@ public class KummerkastenActivity extends AppCompatActivity
             try {
                 jsonResponse = new JSONObject(content);
 
-                JSONArray jsonArray = jsonResponse.optJSONArray("id");
+                JSONArray jsonArray = jsonResponse.optJSONArray("");
 
                 for(int i = 0; i < jsonArray.length(); i++) {
                     JSONObject child = jsonArray.getJSONObject(i);
@@ -199,12 +199,13 @@ public class KummerkastenActivity extends AppCompatActivity
                     String id = child.getString("id");
 
                     output += id + " ";
+                    textView.setText(jsonResponse.toString());
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
-            textView.setText(content);
+           // textView.setText(content);
              // textView.setText(output);
 
 
