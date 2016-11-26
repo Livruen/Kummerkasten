@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_news"
+            android:icon="@drawable/ic_news"
+            android:title="News"
+            android:tint="@color/white"/>
+        <item
+            android:id="@+id/nav_einrichtungen"
+            android:icon="@drawable/ic_einrichtungen"
+            android:title="Einrichtungen"
+            android:tint="@color/white"/>
+
+        <item
+            android:actionMenuTextColor="@color/white"
+            android:id="@+id/nav_veranstaltungen"
+            android:icon="@drawable/ic_calendar"
+            android:title="Veranstaltungen"
+            android:tint="@color/white"/>
+        <item
+            android:id="@+id/nav_kummerkasten"
+            android:icon="@drawable/ic_kummerkasten"
+            android:title="Kummerkasten"
+            android:tint="@color/white"/>
+
+        <item
+            android:id="@+id/nav_betreuer"
+            android:icon="@drawable/ic_betreuer"
+            android:title="Betreuer"
+            android:tint="@color/white"/>
+    </group>
+
+
+
+</menu>
