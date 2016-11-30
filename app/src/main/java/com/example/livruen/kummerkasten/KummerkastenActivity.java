@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.webkit.HttpAuthHandler;
 import android.webkit.WebView;
 import android.widget.TextView;
 
@@ -30,12 +31,13 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import android.app.ProgressDialog;
 
 public class KummerkastenActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
 
-
+    ProgressDialog progressDialog;
 
 
     @Override
@@ -43,13 +45,16 @@ public class KummerkastenActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kummerkasten);
 
+        progressDialog = new ProgressDialog(KummerkastenActivity.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
+
         // Set WP Webside
-        String restURL = "http://study.mipsol.com/wp-json/wp/v2/posts/?filter[category_name]=news";
+        String restURL = "http://study.mipsol.com/wp-json/wp/v2/posts";
         //setView(restURL);
 
-
-
-        new RestOperation().execute(restURL);
+       new RestOperation().execute(restURL);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -142,17 +147,29 @@ public class KummerkastenActivity extends AppCompatActivity
             URL url = null;
             HttpURLConnection urlConnection = null;
 
+
             try {
                 url = new URL(params[0]);
 
                 urlConnection = (HttpURLConnection) url.openConnection();
-                urlConnection.setDoOutput(true);
+                //urlConnection.setDoOutput(true);
 
                 InputStream in = new BufferedInputStream(urlConnection.getInputStream());
 
-                 content =  readStream(in);
+                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 
+                String line = "";
+                StringBuilder builder = new StringBuilder();
 
+                try {
+                    while ((line = reader.readLine()) != null){
+                        builder.append(line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                content =  builder.toString();
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -164,30 +181,13 @@ public class KummerkastenActivity extends AppCompatActivity
             return null;
         }
 
-        private String readStream(InputStream in) {
-
-            BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-            String line = "";
-            StringBuilder builder = new StringBuilder();
-
-            try {
-                while ((line = reader.readLine()) != null){
-                    builder.append(line);
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-
-            return builder.toString();
-        }
-
         @Override
         protected void onPostExecute(Void aVoid) {
             super.onPostExecute(aVoid);
+
             String output = "";
             JSONObject jsonResponse;
-
+            textView.setText(content);
             try {
                 jsonResponse = new JSONObject(content);
 
@@ -199,8 +199,9 @@ public class KummerkastenActivity extends AppCompatActivity
                     String id = child.getString("id");
 
                     output += id + " ";
-                    textView.setText(jsonResponse.toString());
+
                 }
+
             } catch (JSONException e) {
                 e.printStackTrace();
             }
@@ -210,5 +211,6 @@ public class KummerkastenActivity extends AppCompatActivity
 
 
         }
+
     }
 }
