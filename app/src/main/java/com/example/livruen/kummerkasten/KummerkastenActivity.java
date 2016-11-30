@@ -31,6 +31,8 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+
 import android.app.ProgressDialog;
 
 public class KummerkastenActivity extends AppCompatActivity
@@ -38,7 +40,7 @@ public class KummerkastenActivity extends AppCompatActivity
 
 
     ProgressDialog progressDialog;
-
+    String restURL;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -51,7 +53,7 @@ public class KummerkastenActivity extends AppCompatActivity
         progressDialog.show();
 
         // Set WP Webside
-        String restURL = "http://study.mipsol.com/wp-json/wp/v2/posts";
+         restURL = "http://study.mipsol.com/wp-json/wp/v2/posts";
         //setView(restURL);
 
        new RestOperation().execute(restURL);
@@ -121,14 +123,24 @@ public class KummerkastenActivity extends AppCompatActivity
 
         if (id == R.id.nav_news) {
             fragmentManager.beginTransaction().replace(R.id.webView, new News()).commit();
+            restURL = "http://study.mipsol.com/wp-json/wp/v2/posts/?filter[category_name]=news";
+            new RestOperation().execute(restURL);
+
         } else if (id == R.id.nav_einrichtungen) {
             fragmentManager.beginTransaction().replace(R.id.webView, new Einrichtungen()).commit();
+            new RestOperation().execute(restURL);
+
         } else if (id == R.id.nav_veranstaltungen) {
             fragmentManager.beginTransaction().replace(R.id.webView, new Veranstaltungen()).commit();
+            new RestOperation().execute(restURL);
+
         } else if (id == R.id.nav_kummerkasten) {
             fragmentManager.beginTransaction().replace(R.id.webView, new Kummerkasten()).commit();
+            new RestOperation().execute(restURL);
+
         } else if (id == R.id.nav_betreuer) {
             fragmentManager.beginTransaction().replace(R.id.webView, new Betreuer()).commit();
+            new RestOperation().execute(restURL);
             }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -138,8 +150,12 @@ public class KummerkastenActivity extends AppCompatActivity
     public class RestOperation extends AsyncTask<String, Void, Void> {
 
         TextView textView = (TextView) findViewById(R.id.id_label2);
+
         String data;
         String content;
+        WebView webView = (WebView)findViewById(R.id.webView);
+        JSONObject jsonResponse;
+        JSONArray jsonArray;
 
         @Override
         protected Void doInBackground(String... params) {
@@ -186,29 +202,31 @@ public class KummerkastenActivity extends AppCompatActivity
             super.onPostExecute(aVoid);
 
             String output = "";
-            JSONObject jsonResponse;
-            textView.setText(content);
-            try {
-                jsonResponse = new JSONObject(content);
+            ArrayList<Post> posts = new ArrayList<>();
 
-                JSONArray jsonArray = jsonResponse.optJSONArray("");
+            try {
+                //jsonResponse = new JSONObject(content);
+
+                 jsonArray = new JSONArray(content);
 
                 for(int i = 0; i < jsonArray.length(); i++) {
                     JSONObject child = jsonArray.getJSONObject(i);
 
-                    String id = child.getString("id");
+                    Post post = new Post(child);
+                    posts.add(post);
 
-                    output += id + " ";
+                    output += post.getId() + " " + post.getTitle() + post.getContent();
 
                 }
+
 
             } catch (JSONException e) {
                 e.printStackTrace();
             }
 
            // textView.setText(content);
-             // textView.setText(output);
-
+              textView.setText(output);
+              progressDialog.dismiss();
 
         }
 
