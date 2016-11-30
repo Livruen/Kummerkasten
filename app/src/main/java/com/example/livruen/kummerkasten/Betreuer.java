@@ -3,6 +3,7 @@ package com.example.livruen.kummerkasten;
 import android.app.Fragment;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,87 +28,19 @@ import java.net.URL;
 /**
  * Created by livruen on 22.11.16.
  */
-public class Betreuer extends Fragment {
-
-    private static final String TAG_ID = "id";
-
-    View myView;
-    static JSONObject jObj = null;
-    static String json = "";
-    JSONArray user = null;
+public class Betreuer extends AppCompatActivity {
 
 
-    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+    protected void onCreate(Bundle savedInstanceState) {
 
-        View view = inflater.inflate(R.layout.betreuer, container, false);
-
-
-//        HttpURLConnection connection = null;
-//
+        super.onCreate(savedInstanceState);
         String siteName = "http://study.mipsol.com/betreuer/";
-//        URL url = null;
-//
-//        TextView textView =  (TextView) view.findViewById(R.id.id_label);
-//
-//
-//        try {
-//            url = new URL(siteName);
-//            connection = (HttpURLConnection) url.openConnection();
-//            connection.setDoInput(true);
-//            connection.setConnectTimeout(20 * 1000);
-//            connection.setReadTimeout(20 * 1000);
-//
-//            if (connection.getResponseCode() == HttpURLConnection.HTTP_OK){
-//                InputStream stream = connection.getInputStream();
-//
-//                BufferedReader reader = new BufferedReader(new InputStreamReader(stream));
-//
-//                StringBuilder buffer = new StringBuilder();
-//
-//                String line = "";
-//                while ((line = reader.readLine()) != null) {
-//                    buffer.append(line);
-//                }
-//                stream.close();
-//                json = buffer.toString();
-//
-//                try {
-//                    jObj = new JSONObject(json);
-//                    user = jObj.getJSONArray(TAG_ID);
-//
-//                    JSONObject c = user.getJSONObject(0);
-//
-//                    // Storing  JSON item in a Variable
-//                    String id = c.getString(TAG_ID);
-//
-//                    textView.setText(id);
-//
-//
-//                } catch (JSONException e) {
-//                    Log.e("JSON Parser", "Error parsing data " + e.toString());
-//                }
-//            }
-//
-//
-//        } catch (MalformedURLException e) {
-//            e.printStackTrace();
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        } finally {
-//            connection.disconnect();
-//        }
-//
+        setContentView(R.layout.betreuer);
 
-//user = json.getJSONArray(TAG_USER);
+        WebView mWebView = (WebView) findViewById(R.id.webView_betreuer);
 
 
-
-
-        WebView mWebView = (WebView) view.findViewById(R.id.webView);
-
-        mWebView.loadUrl(siteName);
 
         // Enable Javascript
         WebSettings webSettings = mWebView.getSettings();
@@ -116,7 +49,7 @@ public class Betreuer extends Fragment {
         // Force links and redirects to open in the WebView instead of in a browser
         mWebView.setWebViewClient(new WebViewClient());
 
-        return view;
+        mWebView.loadUrl(siteName);
     }
 
 }

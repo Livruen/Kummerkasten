@@ -12,8 +12,10 @@
     <WebView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/webView"
-        android:layout_weight="1.11" />
+        android:id="@+id/webView_betreuer"
+        android:layout_weight="1.11"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentTop="true" />
 
     <!--<TextView-->
         <!--android:id="@+id/id_label"-->

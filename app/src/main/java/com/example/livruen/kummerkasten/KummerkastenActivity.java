@@ -3,6 +3,7 @@ package com.example.livruen.kummerkasten;
 import android.app.FragmentManager;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 
@@ -28,6 +29,9 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import android.app.ProgressDialog;
+
+import com.bumptech.glide.Glide;
+
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
 
@@ -149,10 +153,12 @@ public class KummerkastenActivity extends AppCompatActivity
 //            fragmentManager.beginTransaction().replace(R.id.webView, new Kummerkasten()).commit();
 //            new RestOperation().execute(restURL);
 //
-//        } else if (id == R.id.nav_betreuer) {
-//            fragmentManager.beginTransaction().replace(R.id.webView, new Betreuer()).commit();
-//            new RestOperation().execute(restURL);
-//            }
+//        } else
+            if (id == R.id.nav_betreuer) {
+        //    fragmentManager.beginTransaction().replace(R.id.webView_betreuer, new Betreuer()).commit();
+                startActivity(new Intent(getApplicationContext(), Betreuer.class));
+
+            }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
@@ -243,11 +249,13 @@ public class KummerkastenActivity extends AppCompatActivity
             // Binding data
             TextView title = (TextView) convertView.findViewById(R.id.title);
             TextView content = (TextView) convertView.findViewById(R.id.content);
-            ImageView image = (ImageView) convertView.findViewById(R.id.imageView);
+            ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
 
             title.setText(post.getTitle());
             content.setText(post.getContent());
 
+           // String imgURL = post.getImage();
+          //  Glide.with(getContext()).load(imgURL).into(imageView);
 
             return convertView;
         }
