@@ -38,18 +38,27 @@ public class Betreuer extends AppCompatActivity {
         String siteName = "http://study.mipsol.com/betreuer/";
         setContentView(R.layout.betreuer);
 
-        WebView mWebView = (WebView) findViewById(R.id.webView_betreuer);
+       final WebView webView = (WebView) findViewById(R.id.webView_betreuer);
 
 
 
         // Enable Javascript
-        WebSettings webSettings = mWebView.getSettings();
+        WebSettings webSettings = webView.getSettings();
         webSettings.setJavaScriptEnabled(true);
 
         // Force links and redirects to open in the WebView instead of in a browser
-        mWebView.setWebViewClient(new WebViewClient());
+        webView.setWebViewClient(new WebViewClient() {
+            @Override
+            public void onPageFinished(WebView view, String url)
+            {
+                webView.loadUrl("javascript:(function() { " +
+                        "document.getElementsByTagName('header')[0].style.display=\"none\"; " +
+                        "})()");
+            }
+        });
+     //   webView.loadUrl("http://code.google.com/android");
 
-        mWebView.loadUrl(siteName);
+        webView.loadUrl(siteName);
     }
 
 }
