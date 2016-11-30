@@ -18,18 +18,7 @@ public class News extends android.app.Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        View v=inflater.inflate(R.layout.news, container, false);
-        WebView mWebView = (WebView) v.findViewById(R.id.webView);
-        mWebView.loadUrl("http://study.mipsol.com/category/news/");
-
-        // Enable Javascript
-        WebSettings webSettings = mWebView.getSettings();
-        webSettings.setJavaScriptEnabled(true);
-
-        // Force links and redirects to open in the WebView instead of in a browser
-        mWebView.setWebViewClient(new WebViewClient());
-
-        return v;
+        return inflater.inflate(R.layout.news, container, false);
     }
 
 

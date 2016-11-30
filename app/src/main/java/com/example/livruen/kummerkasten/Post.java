@@ -1,5 +1,7 @@
 package com.example.livruen.kummerkasten;
 
+import android.text.Html;
+
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -10,7 +12,7 @@ public class Post {
 
     private final String ID = "id";
     private final String TITLE = "title";
-    private final String CONTENT = "content";
+    private final String CONTENT = "excerpt";
     private final String RENDERED = "rendered";
     private final String IMAGE = "featured_media";
 
@@ -25,7 +27,7 @@ public class Post {
         try {
             this.id = object.optString(ID);
             this.title = object.getJSONObject(TITLE).optString(RENDERED);
-            this.content = object.getJSONObject(CONTENT).optString(RENDERED);
+            this.content =  Html.fromHtml(object.getJSONObject(CONTENT).optString(RENDERED)).toString();
             this.image = object.optString(IMAGE);
 
         } catch (JSONException e) {

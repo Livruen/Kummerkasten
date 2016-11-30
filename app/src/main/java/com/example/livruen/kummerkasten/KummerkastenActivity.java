@@ -1,12 +1,11 @@
 package com.example.livruen.kummerkasten;
 
 import android.app.FragmentManager;
-import android.content.ClipData;
+
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
@@ -18,50 +17,49 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
-import android.webkit.HttpAuthHandler;
 import android.webkit.WebView;
 import android.widget.ArrayAdapter;
+import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
-
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
-import java.io.BufferedInputStream;
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.ArrayList;
-
 import android.app.ProgressDialog;
+import okhttp3.OkHttpClient;
+import okhttp3.Response;
 
 public class KummerkastenActivity extends AppCompatActivity
-        implements NavigationView.OnNavigationItemSelectedListener {
+        implements NavigationView.OnNavigationItemSelectedListener , OnPostListener{
 
 
     ProgressDialog progressDialog;
     String restURL;
     ListView listView;
+    PostAdapter adapter;
+    ArrayList<Post> posts = new ArrayList<>();
+    RestOperation restOperation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kummerkasten);
 
-        showProgressDialog();
+        //showProgressDialog();
 
         listView = (ListView) findViewById(R.id.listView);
 
-        // Set WP Webside
-         restURL = "http://study.mipsol.com/wp-json/wp/v2/posts";
-        //setView(restURL);
 
-       new RestOperation().execute(restURL);
+        adapter = new PostAdapter(getApplicationContext(), R.layout.post);
+
+
+        listView.setAdapter(adapter);
+        // Set WP Webside
+        restOperation = new RestOperation(this);
+        restURL = "http://study.mipsol.com/wp-json/wp/v2/posts/?filter[category_name]=news";
+        restOperation.execute(restURL);
 
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
@@ -132,32 +130,94 @@ public class KummerkastenActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
+//
+//        if (id == R.id.nav_news) {
+//            fragmentManager.beginTransaction().replace(R.id.webView, new News()).commit();
+//            restURL = "http://study.mipsol.com/wp-json/wp/v2/posts/?filter[category_name]=news";
+//            restOperation.execute(restURL);
+//        }
 
-        if (id == R.id.nav_news) {
-            fragmentManager.beginTransaction().replace(R.id.webView, new News()).commit();
-            restURL = "http://study.mipsol.com/wp-json/wp/v2/posts/?filter[category_name]=news";
-            new RestOperation().execute(restURL);
-
-        } else if (id == R.id.nav_einrichtungen) {
-            fragmentManager.beginTransaction().replace(R.id.webView, new Einrichtungen()).commit();
-            new RestOperation().execute(restURL);
-
-        } else if (id == R.id.nav_veranstaltungen) {
-            fragmentManager.beginTransaction().replace(R.id.webView, new Veranstaltungen()).commit();
-            new RestOperation().execute(restURL);
-
-        } else if (id == R.id.nav_kummerkasten) {
-            fragmentManager.beginTransaction().replace(R.id.webView, new Kummerkasten()).commit();
-            new RestOperation().execute(restURL);
-
-        } else if (id == R.id.nav_betreuer) {
-            fragmentManager.beginTransaction().replace(R.id.webView, new Betreuer()).commit();
-            new RestOperation().execute(restURL);
-            }
+//        } else if (id == R.id.nav_einrichtungen) {
+//            fragmentManager.beginTransaction().replace(R.id.webView, new Einrichtungen()).commit();
+//            new RestOperation().execute(restURL);
+//
+//        } else if (id == R.id.nav_veranstaltungen) {
+//            fragmentManager.beginTransaction().replace(R.id.webView, new Veranstaltungen()).commit();
+//            new RestOperation().execute(restURL);
+//
+//        } else if (id == R.id.nav_kummerkasten) {
+//            fragmentManager.beginTransaction().replace(R.id.webView, new Kummerkasten()).commit();
+//            new RestOperation().execute(restURL);
+//
+//        } else if (id == R.id.nav_betreuer) {
+//            fragmentManager.beginTransaction().replace(R.id.webView, new Betreuer()).commit();
+//            new RestOperation().execute(restURL);
+//            }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    @Override
+    public void onPost(JSONArray jsonArray) {
+        for (int i = 0; i< jsonArray.length(); i++) {
+            JSONObject obj = jsonArray.optJSONObject(i);
+            Post post = new Post(obj);
+            posts.add(post);
+        }
+        adapter.addAll(posts);
+        adapter.notifyDataSetChanged();
+    }
+
+
+
+
+    public class RestOperation extends AsyncTask<String, Void, JSONArray> {
+
+        public OnPostListener listner;
+
+        public RestOperation(OnPostListener listner) {
+            this.listner = listner;
+        }
+
+        @Override
+        protected JSONArray doInBackground(String... params) {
+
+            String url = params[0];
+            OkHttpClient client = new OkHttpClient();
+            okhttp3.Request.Builder builder = new okhttp3.Request.Builder();
+            okhttp3.Request request = builder.url(url).build();
+
+            try {
+                Response response = client.newCall(request).execute();
+                String json = response.body().string();
+
+                JSONArray jsonArray = new JSONArray(json);
+
+                return jsonArray;
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(JSONArray jsonArray) {
+            super.onPostExecute(jsonArray);
+
+            if(jsonArray == null){
+                return;
+            }
+
+            if(listner != null) {
+                listner.onPost(jsonArray);
+            }
+        }
     }
 
     public class PostAdapter extends ArrayAdapter<Post> {
@@ -179,95 +239,17 @@ public class KummerkastenActivity extends AppCompatActivity
                 convertView = inflater.inflate(resource, null);
             }
 
-            return super.getView(position, convertView, parent);
+            Post post = getItem(position);
+            // Binding data
+            TextView title = (TextView) convertView.findViewById(R.id.title);
+            TextView content = (TextView) convertView.findViewById(R.id.content);
+            ImageView image = (ImageView) convertView.findViewById(R.id.imageView);
+
+            title.setText(post.getTitle());
+            content.setText(post.getContent());
+
+
+            return convertView;
         }
-    }
-
-
-
-
-
-    public class RestOperation extends AsyncTask<String, Void, Void> {
-
-
-
-
-        String content;
-
-        JSONObject jsonResponse;
-        JSONArray jsonArray;
-
-        @Override
-        protected Void doInBackground(String... params) {
-
-            URL url = null;
-            HttpURLConnection urlConnection = null;
-
-
-            try {
-                url = new URL(params[0]);
-
-                urlConnection = (HttpURLConnection) url.openConnection();
-                //urlConnection.setDoOutput(true);
-
-                InputStream in = new BufferedInputStream(urlConnection.getInputStream());
-
-                BufferedReader reader = new BufferedReader(new InputStreamReader(in));
-
-                String line = "";
-                StringBuilder builder = new StringBuilder();
-
-                try {
-                    while ((line = reader.readLine()) != null){
-                        builder.append(line);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                content =  builder.toString();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-
-            } finally {
-                urlConnection.disconnect();
-            }
-
-            return null;
-        }
-
-        @Override
-        protected void onPostExecute(Void aVoid) {
-            super.onPostExecute(aVoid);
-
-            String output = "";
-            ArrayList<Post> posts = new ArrayList<>();
-
-            try {
-                //jsonResponse = new JSONObject(content);
-
-                 jsonArray = new JSONArray(content);
-
-                for(int i = 0; i < jsonArray.length(); i++) {
-                    JSONObject child = jsonArray.getJSONObject(i);
-
-                    Post post = new Post(child);
-                    posts.add(post);
-
-                    output += post.getId() + " " + post.getTitle() + post.getContent();
-
-                }
-
-
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-
-              progressDialog.dismiss();
-
-        }
-
     }
 }
