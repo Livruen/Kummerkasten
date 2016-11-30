@@ -12,18 +12,21 @@ public class Post {
     private final String TITLE = "title";
     private final String CONTENT = "content";
     private final String RENDERED = "rendered";
+    private final String IMAGE = "featured_media";
 
     private String id;
     private String title;
     private String content;
+    private String image;
 
 
     public Post(JSONObject object) {
 
         try {
-            this.id = object.getString(ID);
-            this.title = object.getJSONObject(TITLE).getString(RENDERED);
-            this.content = object.getJSONObject(CONTENT).getString(RENDERED);
+            this.id = object.optString(ID);
+            this.title = object.getJSONObject(TITLE).optString(RENDERED);
+            this.content = object.getJSONObject(CONTENT).optString(RENDERED);
+            this.image = object.optString(IMAGE);
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -40,5 +43,9 @@ public class Post {
 
     public String getContent() {
         return content;
+    }
+
+    public String getImage() {
+        return image;
     }
 }

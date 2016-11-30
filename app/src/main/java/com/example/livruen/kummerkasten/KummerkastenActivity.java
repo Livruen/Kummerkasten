@@ -2,10 +2,12 @@ package com.example.livruen.kummerkasten;
 
 import android.app.FragmentManager;
 import android.content.ClipData;
+import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -15,8 +17,11 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.webkit.HttpAuthHandler;
 import android.webkit.WebView;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import org.json.JSONArray;
@@ -41,16 +46,16 @@ public class KummerkastenActivity extends AppCompatActivity
 
     ProgressDialog progressDialog;
     String restURL;
+    ListView listView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kummerkasten);
 
-        progressDialog = new ProgressDialog(KummerkastenActivity.this);
-        progressDialog.setMessage("Loading...");
-        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        progressDialog.show();
+        showProgressDialog();
+
+        listView = (ListView) findViewById(R.id.listView);
 
         // Set WP Webside
          restURL = "http://study.mipsol.com/wp-json/wp/v2/posts";
@@ -72,6 +77,13 @@ public class KummerkastenActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
 
+    }
+
+    private void showProgressDialog() {
+        progressDialog = new ProgressDialog(KummerkastenActivity.this);
+        progressDialog.setMessage("Loading...");
+        progressDialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
+        progressDialog.show();
     }
 
     public void setView(String URL) {
@@ -147,13 +159,41 @@ public class KummerkastenActivity extends AppCompatActivity
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
+
+    public class PostAdapter extends ArrayAdapter<Post> {
+
+        private int resource;
+
+        public PostAdapter(Context context, int resource) {
+
+            super(context, resource);
+            this.resource = resource;
+        }
+
+        @Override
+        public View getView(int position, View convertView, ViewGroup parent) {
+            // Convert view -> reuse
+
+            if(convertView == null){
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                convertView = inflater.inflate(resource, null);
+            }
+
+            return super.getView(position, convertView, parent);
+        }
+    }
+
+
+
+
+
     public class RestOperation extends AsyncTask<String, Void, Void> {
 
-        TextView textView = (TextView) findViewById(R.id.id_label2);
 
-        String data;
+
+
         String content;
-        WebView webView = (WebView)findViewById(R.id.webView);
+
         JSONObject jsonResponse;
         JSONArray jsonArray;
 
@@ -224,8 +264,7 @@ public class KummerkastenActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-           // textView.setText(content);
-              textView.setText(output);
+
               progressDialog.dismiss();
 
         }
