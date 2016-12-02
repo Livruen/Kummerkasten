@@ -24,6 +24,8 @@
         <activity android:name=".Betreuer" />
         <activity android:name=".Beratungsstellen" />
         <activity android:name=".Einrichtungen" />
+        <activity android:name=".Kummerkasten" />
+        <activity android:name=".Veranstaltungen" />
     </application>
 
 </manifest>

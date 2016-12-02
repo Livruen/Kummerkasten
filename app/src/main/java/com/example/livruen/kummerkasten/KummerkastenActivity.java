@@ -148,22 +148,22 @@ public class KummerkastenActivity extends AppCompatActivity
 //        } else if (id == R.id.nav_veranstaltungen) {
 //            fragmentManager.beginTransaction().replace(R.id.webView, new Veranstaltungen()).commit();
 //            new RestOperation().execute(restURL);
-//
-//        } else if (id == R.id.nav_kummerkasten) {
-//            fragmentManager.beginTransaction().replace(R.id.webView, new Kummerkasten()).commit();
-//            new RestOperation().execute(restURL);
-//
-//        } else
+
             if (id == R.id.nav_betreuer) {
         //    fragmentManager.beginTransaction().replace(R.id.webView_betreuer, new Betreuer()).commit();
                 startActivity(new Intent(getApplicationContext(), Betreuer.class));
-
             } else if (id == R.id.nav_beratungsstellen) {
                 startActivity(new Intent(getApplicationContext(), Beratungsstellen.class));
             } else if (id == R.id.nav_einrichtungen) {
                 startActivity(new Intent(getApplicationContext(), Einrichtungen.class));
-            }
+            } else if (id == R.id.nav_news) {
+                startActivity(new Intent(getApplicationContext(), KummerkastenActivity.class));
+            } else if (id == R.id.nav_kummerkasten) {
+                startActivity(new Intent(getApplicationContext(), Kummerkasten.class));
+            }else if (id == R.id.nav_veranstaltungen) {
+                startActivity(new Intent(getApplicationContext(), Veranstaltungen.class));
 
+            }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
