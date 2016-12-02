@@ -1,20 +1,15 @@
 package com.example.livruen.kummerkasten;
 
-import android.app.Fragment;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 /**
- * Created by livruen on 22.11.16.
+ * Created by livruen on 02.12.16.
  */
-public class Einrichtungen extends AppCompatActivity {
+public class Beratungsstellen extends AppCompatActivity {
 
 
     public static final String HEADER = "document.getElementsByTagName('header')[0].style.display=\"none\";";
@@ -26,11 +21,12 @@ public class Einrichtungen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        String siteName = "http://study.mipsol.com/jugendzentren/";
-        setContentView(R.layout.einrichtungen);
 
-        final WebView webView = (WebView) findViewById(R.id.webView_einrichtungen);
+        super.onCreate(savedInstanceState);
+        String siteName = "http://study.mipsol.com/beratungsstellen/";
+        setContentView(R.layout.beratungsstellen);
+
+        final WebView webView = (WebView) findViewById(R.id.webView_beratungsstellen);
 
 
         // Enable Javascript
@@ -42,14 +38,11 @@ public class Einrichtungen extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 webView.loadUrl("javascript:(function() { " +
-                        HEADER + HEADER_IMAGE + ENTRY_HEADER  + FOOTER + COLOFON +
+                        HEADER + HEADER_IMAGE + ENTRY_HEADER + FOOTER + COLOFON +
                         "})()");
             }
         });
         // https://jsoup.org/
         webView.loadUrl(siteName);
     }
-
-
-
 }

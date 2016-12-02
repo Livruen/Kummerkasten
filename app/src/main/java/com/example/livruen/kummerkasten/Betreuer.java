@@ -31,6 +31,13 @@ import java.net.URL;
 public class Betreuer extends AppCompatActivity {
 
 
+    public static final String HEADER = "document.getElementsByTagName('header')[0].style.display=\"none\";";
+    public static final String HEADER_IMAGE = "document.getElementsByClassName('header-image')[0].style.display=\"none\";";
+    public static final String ENTRY_HEADER = "document.getElementsByClassName('entry-header')[0].style.display=\"none\";";
+    public static final String PANEL = "document.getElementsByClassName('panel-row-style')[0].style.display=\"none\";";
+    public static final String FOOTER = "document.getElementsById('sidebar-footer.footer-widgets.widget-area')[0].style.display=\"none !important\"  ;";
+    public static final String COLOFON = "document.getElementsByClassName('site-footer')[0].style.display=\"none\"  ;";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -49,15 +56,13 @@ public class Betreuer extends AppCompatActivity {
         // Force links and redirects to open in the WebView instead of in a browser
         webView.setWebViewClient(new WebViewClient() {
             @Override
-            public void onPageFinished(WebView view, String url)
-            {
+            public void onPageFinished(WebView view, String url) {
                 webView.loadUrl("javascript:(function() { " +
-                        "document.getElementsByTagName('header')[0].style.display=\"none\"; " +
+                        HEADER + HEADER_IMAGE + ENTRY_HEADER + PANEL + FOOTER + COLOFON+
                         "})()");
             }
         });
-     //   webView.loadUrl("http://code.google.com/android");
-
+        // https://jsoup.org/
         webView.loadUrl(siteName);
     }
 

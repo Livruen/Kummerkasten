@@ -158,7 +158,12 @@ public class KummerkastenActivity extends AppCompatActivity
         //    fragmentManager.beginTransaction().replace(R.id.webView_betreuer, new Betreuer()).commit();
                 startActivity(new Intent(getApplicationContext(), Betreuer.class));
 
+            } else if (id == R.id.nav_beratungsstellen) {
+                startActivity(new Intent(getApplicationContext(), Beratungsstellen.class));
+            } else if (id == R.id.nav_einrichtungen) {
+                startActivity(new Intent(getApplicationContext(), Einrichtungen.class));
             }
+
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);

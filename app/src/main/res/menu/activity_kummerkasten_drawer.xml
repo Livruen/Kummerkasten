@@ -10,7 +10,12 @@
         <item
             android:id="@+id/nav_einrichtungen"
             android:icon="@drawable/ic_einrichtungen"
-            android:title="Einrichtungen"
+            android:title="Jugendzentren"
+            android:tint="@color/white"/>
+        <item
+            android:id="@+id/nav_beratungsstellen"
+            android:icon="@drawable/ic_einrichtungen"
+            android:title="Beratungsstellen"
             android:tint="@color/white"/>
 
         <item

@@ -28,6 +28,7 @@ public class Post {
             this.id = object.optString(ID);
             this.title = object.getJSONObject(TITLE).optString(RENDERED);
             this.content =  Html.fromHtml(object.getJSONObject(CONTENT).optString(RENDERED)).toString();
+            //TODO
             this.image =  object.getJSONObject("_links").getJSONArray("self").getJSONObject(0).optString("href");
 
         } catch (JSONException e) {

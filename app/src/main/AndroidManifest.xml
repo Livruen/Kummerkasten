@@ -22,6 +22,8 @@
             </intent-filter>
         </activity>
         <activity android:name=".Betreuer" />
+        <activity android:name=".Beratungsstellen" />
+        <activity android:name=".Einrichtungen" />
     </application>
 
 </manifest>
