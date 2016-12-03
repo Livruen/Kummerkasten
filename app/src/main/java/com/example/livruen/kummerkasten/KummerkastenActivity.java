@@ -19,6 +19,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.webkit.WebView;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -29,8 +30,6 @@ import org.json.JSONObject;
 import java.io.IOException;
 import java.util.ArrayList;
 import android.app.ProgressDialog;
-
-import com.bumptech.glide.Glide;
 
 import okhttp3.OkHttpClient;
 import okhttp3.Response;
@@ -60,6 +59,20 @@ public class KummerkastenActivity extends AppCompatActivity
 
 
         listView.setAdapter(adapter);
+
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Post post = posts.get(position);
+
+                Intent intent = new Intent(getApplicationContext(), PostActivity.class);
+                intent.putExtra("content", post.getContent());
+
+                startActivity(intent);
+            }
+        });
+
+
         // Set WP Webside
         restOperation = new RestOperation(this);
         restURL = "http://study.mipsol.com/wp-json/wp/v2/posts/?filter[category_name]=news";
@@ -253,11 +266,11 @@ public class KummerkastenActivity extends AppCompatActivity
             Post post = getItem(position);
             // Binding data
             TextView title = (TextView) convertView.findViewById(R.id.title);
-            TextView content = (TextView) convertView.findViewById(R.id.content);
+            TextView excerpt = (TextView) convertView.findViewById(R.id.excerpt);
             ImageView imageView = (ImageView) convertView.findViewById(R.id.imageView);
 
             title.setText(post.getTitle());
-            content.setText(post.getContent());
+            excerpt.setText(post.getExcerpt());
 
            // String imgURL = post.getImage();
           //  Glide.with(getContext()).load(imgURL).into(imageView);
