@@ -31,7 +31,7 @@ public class Post {
             this.id = object.optString(ID);
             this.title = object.getJSONObject(TITLE).optString(RENDERED);
             this.excerpt =  Html.fromHtml(object.getJSONObject(EXCERPT).optString(RENDERED)).toString();
-            this.content = Html.fromHtml(object.getJSONObject(CONTENT).optString(RENDERED)).toString();
+            this.content = object.getJSONObject(CONTENT).optString(RENDERED).toString();
             Log.d("comtent", content);
             //TODO
             this.image =  object.getJSONObject("_links").getJSONArray("self").getJSONObject(0).optString("href");

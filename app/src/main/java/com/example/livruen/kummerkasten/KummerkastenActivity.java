@@ -64,8 +64,9 @@ public class KummerkastenActivity extends AppCompatActivity
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Post post = posts.get(position);
-
+                
                 Intent intent = new Intent(getApplicationContext(), PostActivity.class);
+
                 intent.putExtra("content", post.getContent());
 
                 startActivity(intent);
