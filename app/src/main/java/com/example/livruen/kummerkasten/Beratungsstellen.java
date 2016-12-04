@@ -12,13 +12,6 @@ import android.webkit.WebViewClient;
 public class Beratungsstellen extends AppCompatActivity {
 
 
-    public static final String HEADER = "document.getElementsByTagName('header')[0].style.display=\"none\";";
-    public static final String HEADER_IMAGE = "document.getElementsByClassName('header-image')[0].style.display=\"none\";";
-    public static final String ENTRY_HEADER = "document.getElementsByClassName('entry-header')[0].style.display=\"none\";";
-    public static final String PANEL = "document.getElementsByClassName('panel-row-style')[0].style.display=\"none\";";
-    public static final String FOOTER = "document.getElementsById('sidebar-footer.footer-widgets.widget-area')[0].style.display=\"none !important\"  ;";
-    public static final String COLOFON = "document.getElementsByClassName('site-footer')[0].style.display=\"none\"  ;";
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -38,7 +31,7 @@ public class Beratungsstellen extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 webView.loadUrl("javascript:(function() { " +
-                        HEADER + HEADER_IMAGE + ENTRY_HEADER + FOOTER + COLOFON +
+                        HTMLparser.HEADER.getValue() + HTMLparser.HEADER_IMAGE.getValue() + HTMLparser.ENTRY_HEADER.getValue() + HTMLparser.FOOTER.getValue() + HTMLparser.COLOFON.getValue() +
                         "})()");
             }
         });

@@ -15,16 +15,7 @@ import android.webkit.WebViewClient;
  * Created by livruen on 22.11.16.
  */
 public class Kummerkasten extends AppCompatActivity {
-    View myView;
 
-    public static final String HEADER = "document.getElementsByTagName('header')[0].style.display=\"none\";";
-    public static final String HEADER_IMAGE = "document.getElementsByClassName('header-image')[0].style.display=\"none\";";
-    public static final String ENTRY_HEADER = "document.getElementsByClassName('entry-header')[0].style.display=\"none\";";
-    public static final String CONTENT = "document.getElementsByClassName('panel-row-style')[0].style.display=\"none\";";
-    public static final String PANEL = "document.getElementsByClassName('page-wrap')[0].style.padding-top=\"0px !important\";";
-
-    public static final String FOOTER = "document.getElementsByClassName('sidebar-column')[0].style.display=\"none !important\"  ;";
-    public static final String COLOFON = "document.getElementsByClassName('site-footer')[0].style.display=\"none\"  ;";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +35,7 @@ public class Kummerkasten extends AppCompatActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 webView.loadUrl("javascript:(function() { " +
-                        HEADER + HEADER_IMAGE + ENTRY_HEADER + FOOTER + COLOFON + CONTENT+
+                        HTMLparser.HEADER.getValue() + HTMLparser.HEADER_IMAGE.getValue() + HTMLparser.ENTRY_HEADER.getValue() + HTMLparser.FOOTER.getValue() + HTMLparser.COLOFON.getValue() + HTMLparser.CONTENT.getValue() +
                         "})()");
             }
         });

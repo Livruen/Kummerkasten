@@ -49,7 +49,6 @@ public class KummerkastenActivity extends AppCompatActivity
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_kummerkasten);
-
         //showProgressDialog();
 
         listView = (ListView) findViewById(R.id.listView);
@@ -148,20 +147,6 @@ public class KummerkastenActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         FragmentManager fragmentManager = getFragmentManager();
-//
-//        if (id == R.id.nav_news) {
-//            fragmentManager.beginTransaction().replace(R.id.webView, new News()).commit();
-//            restURL = "http://study.mipsol.com/wp-json/wp/v2/posts/?filter[category_name]=news";
-//            restOperation.execute(restURL);
-//        }
-
-//        } else if (id == R.id.nav_einrichtungen) {
-//            fragmentManager.beginTransaction().replace(R.id.webView, new Einrichtungen()).commit();
-//            new RestOperation().execute(restURL);
-//
-//        } else if (id == R.id.nav_veranstaltungen) {
-//            fragmentManager.beginTransaction().replace(R.id.webView, new Veranstaltungen()).commit();
-//            new RestOperation().execute(restURL);
 
             if (id == R.id.nav_betreuer) {
         //    fragmentManager.beginTransaction().replace(R.id.webView_betreuer, new Betreuer()).commit();
